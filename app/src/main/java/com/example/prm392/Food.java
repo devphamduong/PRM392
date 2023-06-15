@@ -1,4 +1,4 @@
-package com.example.prmproject;
+package com.example.prm392;
 
 public class Food {
     public int image;

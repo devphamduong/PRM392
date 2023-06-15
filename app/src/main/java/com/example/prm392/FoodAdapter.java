@@ -1,4 +1,4 @@
-package com.example.prmproject;
+package com.example.prm392;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +21,13 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
 
     @NonNull
     @Override
-    public FoodAdapter.FoodHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FoodHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_food, parent, false);
         return new FoodHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FoodAdapter.FoodHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FoodHolder holder, int position) {
         holder.image.setImageResource(foods.get(position).getImage());
         holder.tv_name.setText(foods.get(position).getName());
 //        holder.tv_description.setText(foods.get(position).getDescription());
