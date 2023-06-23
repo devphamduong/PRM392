@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.prm392.databinding.ActivityRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Register extends AppCompatActivity {
+    ActivityRegisterBinding binding;
     FirebaseAuth auth;
     TextInputEditText edt_email, edt_password;
     ProgressBar progressBar;
@@ -38,13 +40,14 @@ public class Register extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         auth = FirebaseAuth.getInstance();
-        edt_email = findViewById(R.id.edt_email);
-        edt_password = findViewById(R.id.edt_password);
-        progressBar = findViewById(R.id.progressBar);
-        btn_register = findViewById(R.id.btn_register);
-        textView = findViewById(R.id.loginNow);
+        edt_email = binding.edtEmail;
+        edt_password = binding.edtPassword;
+        progressBar = binding.progressBar;
+        btn_register = binding.btnRegister;
+        textView = binding.textView;
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,9 +62,11 @@ public class Register extends AppCompatActivity {
                 String email = edt_email.getText().toString().trim(), password = edt_password.getText().toString().trim();
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 } else if (TextUtils.isEmpty(password)) {
                     Toast.makeText(Register.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 } else {
                     SignUp(email, password);
