@@ -11,37 +11,40 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.prm392.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    ActivityMainBinding binding;
     FirebaseAuth auth;
     FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         if (user == null) {
             GoToLogin();
         } else {
-            setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+            setSupportActionBar((Toolbar) binding.toolbar);
             ArrayList<Food> foods = new ArrayList<>();
             Food food1 = new Food(R.drawable.ic_launcher_foreground, "Pork skin", "High fat");
             Food food2 = new Food(R.drawable.ic_launcher_foreground, "Chicken breast", "High protein but low on fat");
             foods.add(food1);
             foods.add(food2);
             FoodAdapter adapter = new FoodAdapter(foods);
-            RecyclerView rec = findViewById(R.id.rv_foods);
+            RecyclerView rec = binding.rvFoods;
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             rec.setLayoutManager(layoutManager);
             rec.setAdapter(adapter);
 
-//        ((Button) findViewById(R.id.btn_show_all)).setOnClickListener(new View.OnClickListener() {
+//          binding.btnShowAll.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
