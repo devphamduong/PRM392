@@ -7,18 +7,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392.databinding.FragmentManagerBinding;
+import com.example.prm392.databinding.FragmentMainManagerBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ManagerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManagerFragment extends Fragment {
-    FragmentManagerBinding binding;
+public class MainManagerFragment extends Fragment {
+    public static FragmentMainManagerBinding binding;
     FirebaseAuth auth;
     FirebaseUser user;
     // TODO: Rename parameter arguments, choose names that match
@@ -30,7 +34,7 @@ public class ManagerFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ManagerFragment() {
+    public MainManagerFragment() {
         // Required empty public constructor
     }
 
@@ -64,14 +68,24 @@ public class ManagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentManagerBinding.inflate(inflater, container, false);
+        binding = FragmentMainManagerBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         if (user == null) {
             GoToLogin();
         } else {
-//
+//            setSupportActionBar(binding.toolbar);
+            ArrayList<Food> foods = new ArrayList<>();
+            Food food1 = new Food(R.drawable.ic_launcher_foreground, "Pork skin", "High fat");
+            Food food2 = new Food(R.drawable.ic_launcher_foreground, "Chicken breast", "High protein but low on fat");
+            foods.add(food1);
+            foods.add(food2);
+            FoodManagerAdapter adapter = new FoodManagerAdapter(foods);
+            RecyclerView rec = binding.rvManagerFoods;
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+            rec.setLayoutManager(layoutManager);
+            rec.setAdapter(adapter);
         }
         return view;
     }

@@ -1,6 +1,8 @@
 package com.example.prm392;
 
-public class Food {
+import java.io.Serializable;
+
+public class Food implements Serializable {
     public int image;
     public String name;
     public String description;
