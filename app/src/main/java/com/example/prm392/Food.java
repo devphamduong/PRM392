@@ -3,9 +3,9 @@ package com.example.prm392;
 import java.io.Serializable;
 
 public class Food implements Serializable {
-    public int image;
-    public String name;
-    public String description;
+    private int image;
+    private String name;
+    private String description;
 
     public int getImage() {
         return image;

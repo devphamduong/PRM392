@@ -1,6 +1,7 @@
 package com.example.prm392;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -38,18 +38,24 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
             @Override
             public void onClick(View v) {
                 Food food = new Food(foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getDescription());
+                Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
                 Bundle data = new Bundle();
-                data.putSerializable("data", food);
-                Navigation.findNavController(MainManagerFragment.binding.getRoot()).navigate(R.id.action_mainManagerFragment_to_foodDetailsFragment, data);
+                data.putSerializable("food", food);
+                intent.putExtra("data", data);
+                v.getContext().startActivity(intent);
+//                Navigation.findNavController(MainManagerFragment.binding.getRoot()).navigate(R.id.action_mainManagerFragment_to_foodDetailsFragment, data);
             }
         });
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Food food = new Food(foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getDescription());
+                Intent intent = new Intent(v.getContext(), FoodEditActivity.class);
                 Bundle data = new Bundle();
-                data.putSerializable("data", food);
-                Navigation.findNavController(MainManagerFragment.binding.getRoot()).navigate(R.id.action_mainManagerFragment_to_foodEditFragment, data);
+                data.putSerializable("food", food);
+                intent.putExtra("data", data);
+                v.getContext().startActivity(intent);
+//                Navigation.findNavController(MainManagerFragment.binding.getRoot()).navigate(R.id.action_mainManagerFragment_to_foodEditFragment, data);
             }
         });
         holder.btn_delete.setOnClickListener(new View.OnClickListener() {

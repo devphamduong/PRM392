@@ -63,7 +63,7 @@ public class FoodDetailsFragment extends Fragment {
         View view = binding.getRoot();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
             Food food = getArguments().getSerializable("data", Food.class);
-            binding.txtFood.setText(food.name);
+            binding.txtFood.setText(food.getName());
         }
         return view;
     }
