@@ -102,6 +102,14 @@ public class ManagerFragment extends Fragment {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
             rec.setLayoutManager(layoutManager);
             rec.setAdapter(adapter);
+
+            binding.btnActionAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), FoodAddActivity.class);
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
         return view;
     }
