@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prm392.databinding.ActivityFoodEditBinding;
+import com.squareup.picasso.Picasso;
 
 public class FoodEditActivity extends AppCompatActivity {
     ActivityFoodEditBinding binding;
@@ -24,7 +25,11 @@ public class FoodEditActivity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("data");
         if (bundle != null) {
             Food food = (Food) bundle.getSerializable("food");
-            binding.img.setImageResource(food.getImage());
+            Picasso.with(getApplicationContext())
+                    .load(food.getImage())
+                    .placeholder(R.drawable.ic_image_loading)
+                    .error(R.drawable.ic_error_loading)
+                    .into(binding.img);
             binding.edtName.setText(food.getName());
             binding.edtDescription.setText(food.getDescription());
         }

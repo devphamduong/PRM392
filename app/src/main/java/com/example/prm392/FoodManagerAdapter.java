@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.FoodHolder> {
@@ -31,13 +33,17 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull FoodManagerAdapter.FoodHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.image.setImageResource(foods.get(position).getImage());
+        Picasso.with(holder.itemView.getContext())
+                .load(foods.get(position).getImage())
+                .placeholder(R.drawable.ic_image_loading)
+                .error(R.drawable.ic_error_loading)
+                .into(holder.image);
         holder.tv_name.setText(foods.get(position).getName());
         //        holder.tv_description.setText(foods.get(position).getDescription());
         holder.btn_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getDescription());
+                Food food = new Food(foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getDescription(), 1);
                 Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);
@@ -49,7 +55,7 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getDescription());
+                Food food = new Food(foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getDescription(), foods.get(position).getCategoryId());
                 Intent intent = new Intent(v.getContext(), FoodEditActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);

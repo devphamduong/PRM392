@@ -3,15 +3,16 @@ package com.example.prm392;
 import java.io.Serializable;
 
 public class Food implements Serializable {
-    private int image;
+    private String image;
     private String name;
     private String description;
+    private int categoryId;
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -31,12 +32,21 @@ public class Food implements Serializable {
         this.description = description;
     }
 
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public Food() {
     }
 
-    public Food(int image, String name, String description) {
+    public Food(String image, String name, String description, int categoryId) {
         this.image = image;
         this.name = name;
         this.description = description;
+        this.categoryId = categoryId;
     }
 }

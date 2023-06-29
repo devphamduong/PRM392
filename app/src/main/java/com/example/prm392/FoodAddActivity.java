@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 public class FoodAddActivity extends AppCompatActivity {
     ActivityFoodAddBinding binding;
     private DatabaseReference mDatabase;
+    private int catogoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +67,7 @@ public class FoodAddActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getItemAtPosition(position).equals("Category")) {
                 } else {
-                    String item = parent.getItemAtPosition(position).toString();
-                    Toast.makeText(FoodAddActivity.this, "Selected: " + item, Toast.LENGTH_SHORT).show();
+                    catogoryId = Integer.parseInt(String.valueOf(id));
                 }
             }
 
@@ -76,7 +75,13 @@ public class FoodAddActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
+        binding.btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Food food = new Food("1", binding.edtName.getText().toString(), binding.edtDescription.getText().toString(), catogoryId);
+                mDatabase.child("Food").push().setValue(food);
+            }
+        });
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

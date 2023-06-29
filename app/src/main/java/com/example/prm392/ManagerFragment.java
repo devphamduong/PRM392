@@ -77,8 +77,8 @@ public class ManagerFragment extends Fragment {
         } else {
 //            setSupportActionBar(binding.toolbar);
             ArrayList<Food> foods = new ArrayList<>();
-            Food food1 = new Food(R.drawable.ic_launcher_foreground, "Pork skin", "High fat");
-            Food food2 = new Food(R.drawable.ic_launcher_foreground, "Chicken breast", "What Is Chicken Breast?\n" +
+            Food food1 = new Food("https://www.pngitem.com/pimgs/m/219-2198825_transparent-rice-clipart-transparent-fried-rice-clipart-hd.png", "Pork skin", "High fat", 1);
+            Food food2 = new Food("https://www.pngitem.com/pimgs/m/219-2198825_transparent-rice-clipart-transparent-fried-rice-clipart-hd.png", "Chicken breast", "What Is Chicken Breast?\n" +
                     "\n" +
                     "The chicken breast is a lean cut of meat taken from the pectoral muscle on the underside of the chicken. Each whole chicken contains one chicken breast with two halves, which are typically separated during the butchering process and sold as individual breasts. Given its desirable white meat and health benefits, boneless chicken breast meat is the most expensive cut of chicken in comparison to chicken thighs, wings, and drumsticks.\n" +
                     "\n" +
@@ -94,7 +94,7 @@ public class ManagerFragment extends Fragment {
                     "75 milligrams of cholesterol\n" +
                     "85 milligrams of sodium\n" +
                     "\n" +
-                    "In comparison, the same portion of skin-on chicken breast—like that of a rotisserie chicken—contains 172 calories, 9.3 grams of total fat, and slightly reduced levels of protein. On average, one small chicken breast contains 55 percent of a person’s recommended protein intake, based on the suggested daily values for a 2,000 calorie diet. The exact nutritional value and calorie count of an individual chicken breast can fluctuate depending on the size and whether the bird was pasture raised, free range, cage free, or caged.");
+                    "In comparison, the same portion of skin-on chicken breast—like that of a rotisserie chicken—contains 172 calories, 9.3 grams of total fat, and slightly reduced levels of protein. On average, one small chicken breast contains 55 percent of a person’s recommended protein intake, based on the suggested daily values for a 2,000 calorie diet. The exact nutritional value and calorie count of an individual chicken breast can fluctuate depending on the size and whether the bird was pasture raised, free range, cage free, or caged.", 1);
             foods.add(food1);
             foods.add(food2);
             FoodManagerAdapter adapter = new FoodManagerAdapter(foods);

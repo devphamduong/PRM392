@@ -78,8 +78,8 @@ public class HomeFragment extends Fragment {
         } else {
 //            setSupportActionBar(binding.toolbar);
             ArrayList<Food> foods = new ArrayList<>();
-            Food food1 = new Food(R.drawable.ic_launcher_foreground, "Pork skin", "High fat");
-            Food food2 = new Food(R.drawable.ic_launcher_foreground, "Chicken breast", "High protein but low on fat");
+            Food food1 = new Food("https://www.pngitem.com/pimgs/m/219-2198825_transparent-rice-clipart-transparent-fried-rice-clipart-hd.png", "Pork skin", "High fat", 1);
+            Food food2 = new Food("https://www.pngitem.com/pimgs/m/219-2198825_transparent-rice-clipart-transparent-fried-rice-clipart-hd.png", "Chicken breast", "High protein but low on fat", 1);
             foods.add(food1);
             foods.add(food2);
             FoodAdapter adapter = new FoodAdapter(foods);

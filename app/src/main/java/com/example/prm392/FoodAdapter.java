@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
@@ -28,7 +30,11 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull FoodHolder holder, int position) {
-        holder.image.setImageResource(foods.get(position).getImage());
+        Picasso.with(holder.itemView.getContext())
+                .load(foods.get(position).getImage())
+                .placeholder(R.drawable.ic_image_loading)
+                .error(R.drawable.ic_error_loading)
+                .into(holder.image);
         holder.tv_name.setText(foods.get(position).getName());
 //        holder.tv_description.setText(foods.get(position).getDescription());
     }
