@@ -1,13 +1,15 @@
 package com.example.prm392;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prm392.databinding.ActivityFoodDetailsBinding;
 
-public class FoodDetailsActivity extends Activity {
+public class FoodDetailsActivity extends AppCompatActivity {
     ActivityFoodDetailsBinding binding;
 
     @Override
@@ -26,6 +28,11 @@ public class FoodDetailsActivity extends Activity {
             binding.txtName.setText(food.getName());
             binding.txtDescription.setText(food.getDescription());
         }
-//        finish();
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }

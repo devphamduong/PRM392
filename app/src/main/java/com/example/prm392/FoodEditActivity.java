@@ -1,20 +1,20 @@
 package com.example.prm392;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prm392.databinding.ActivityFoodEditBinding;
 
-public class FoodEditActivity extends Activity {
+public class FoodEditActivity extends AppCompatActivity {
     ActivityFoodEditBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_food_edit);
-
         binding = ActivityFoodEditBinding.inflate(getLayoutInflater());
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -28,6 +28,11 @@ public class FoodEditActivity extends Activity {
             binding.edtName.setText(food.getName());
             binding.edtDescription.setText(food.getDescription());
         }
-//        finish();
+        binding.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }
