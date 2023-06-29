@@ -38,12 +38,12 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
                 .placeholder(R.drawable.ic_image_loading)
                 .error(R.drawable.ic_error_loading)
                 .into(holder.image);
-        holder.tv_name.setText(foods.get(position).getName());
-        //        holder.tv_description.setText(foods.get(position).getDescription());
+        holder.txt_name.setText(foods.get(position).getName());
+        holder.txt_key.setText(foods.get(position).getId());
         holder.btn_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getDescription(), 1);
+                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getDescription(), 1);
                 Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);
@@ -55,7 +55,7 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getDescription(), foods.get(position).getCategoryId());
+                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getDescription(), foods.get(position).getCategoryId());
                 Intent intent = new Intent(v.getContext(), FoodEditActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);
@@ -79,8 +79,8 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
 
     class FoodHolder extends RecyclerView.ViewHolder { //đại diện cho layout row_chapter
         ImageView image;
-        TextView tv_name;
-        TextView tv_description;
+        TextView txt_name;
+        TextView txt_key;
         ImageView btn_details;
         ImageView btn_edit;
         ImageView btn_delete;
@@ -88,8 +88,8 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
         public FoodHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
-            tv_name = itemView.findViewById(R.id.tv_name);
-            //            tv_description = itemView.findViewById(R.id.tv_description);
+            txt_name = itemView.findViewById(R.id.txt_name);
+            txt_key = itemView.findViewById(R.id.txt_key);
             btn_details = itemView.findViewById(R.id.btn_details);
             btn_edit = itemView.findViewById(R.id.btn_edit);
             btn_delete = itemView.findViewById(R.id.btn_delete);

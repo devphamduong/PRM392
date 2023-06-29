@@ -3,10 +3,19 @@ package com.example.prm392;
 import java.io.Serializable;
 
 public class Food implements Serializable {
+    private String id;
     private String image;
     private String name;
     private String description;
     private int categoryId;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getImage() {
         return image;
@@ -43,7 +52,8 @@ public class Food implements Serializable {
     public Food() {
     }
 
-    public Food(String image, String name, String description, int categoryId) {
+    public Food(String id, String image, String name, String description, int categoryId) {
+        this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;

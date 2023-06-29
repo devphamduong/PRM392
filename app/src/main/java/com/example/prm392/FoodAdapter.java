@@ -52,7 +52,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
         public FoodHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
-            tv_name = itemView.findViewById(R.id.tv_name);
+            tv_name = itemView.findViewById(R.id.txt_name);
 //            tv_description = itemView.findViewById(R.id.tv_description);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

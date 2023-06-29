@@ -1,5 +1,6 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
@@ -21,7 +22,7 @@
             app:srcCompat="@drawable/ic_launcher_foreground" />
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/txt_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -40,7 +41,7 @@
             android:id="@+id/btn_details"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:layout_constraintStart_toEndOf="@+id/tv_name"
+            app:layout_constraintStart_toEndOf="@+id/txt_name"
             app:layout_constraintEnd_toStartOf="@+id/btn_edit"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -65,6 +66,15 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:srcCompat="@drawable/ic_delete" />
+
+        <TextView
+            android:id="@+id/txt_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="88dp"
+            tools:layout_editor_absoluteY="7dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -25,7 +25,7 @@ public class Login extends AppCompatActivity {
     TextInputEditText edt_email, edt_password;
     ProgressBar progressBar;
     Button btn_signin;
-    TextView textView;
+    TextView registerNow;
 
 //    @Override
 //    public void onStart() {
@@ -46,9 +46,10 @@ public class Login extends AppCompatActivity {
         edt_password = binding.edtPassword;
         progressBar = binding.progressBar;
         btn_signin = binding.btnSignin;
-        textView = binding.textView;
+        registerNow = binding.registerNow;
         SignIn("pduong244@gmail.com", "123456");
-        textView.setOnClickListener(new View.OnClickListener() {
+
+        registerNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoToRegister();

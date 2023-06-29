@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,11 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.prm392.databinding.FragmentManagerBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -93,29 +92,47 @@ public class ManagerFragment extends Fragment {
             rec.setAdapter(adapter);
             binding.progressBar.setVisibility(View.VISIBLE);
             binding.placeholderText.setVisibility(View.VISIBLE);
-            mDatabase.child("Foods").addChildEventListener(new ChildEventListener() {
+//            mDatabase.child("Foods").addChildEventListener(new ChildEventListener() {
+//                @Override
+//                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                    Food food = snapshot.getValue(Food.class);
+//                    foods.add(food);
+//                    adapter.notifyDataSetChanged();
+//                    binding.progressBar.setVisibility(View.GONE);
+//                    binding.placeholderText.setVisibility(View.GONE);
+//                }
+//
+//                @Override
+//                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//                }
+//
+//                @Override
+//                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//                }
+//
+//                @Override
+//                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
+            mDatabase.child("Foods").addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                    Food food = snapshot.getValue(Food.class);
-                    foods.add(food);
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    foods.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        Food food = ds.getValue(Food.class);
+                        foods.add(food);
+                    }
                     adapter.notifyDataSetChanged();
                     binding.progressBar.setVisibility(View.GONE);
                     binding.placeholderText.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
                 }
 
                 @Override

@@ -26,15 +26,15 @@ public class Register extends AppCompatActivity {
     TextInputEditText edt_email, edt_password;
     ProgressBar progressBar;
     Button btn_register;
-    TextView textView;
+    TextView loginNow;
 
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = auth.getCurrentUser();
-        if (currentUser != null) {
-            GoToLogin();
-        }
+//        if (currentUser != null) {
+//            GoToLogin();
+//        }
     }
 
     @Override
@@ -47,9 +47,9 @@ public class Register extends AppCompatActivity {
         edt_password = binding.edtPassword;
         progressBar = binding.progressBar;
         btn_register = binding.btnRegister;
-        textView = binding.textView;
+        loginNow = binding.loginNow;
 
-        textView.setOnClickListener(new View.OnClickListener() {
+        loginNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoToLogin();
