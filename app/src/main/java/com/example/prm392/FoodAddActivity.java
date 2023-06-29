@@ -19,6 +19,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import io.noties.markwon.Markwon;
+
 public class FoodAddActivity extends AppCompatActivity {
     ActivityFoodAddBinding binding;
     private DatabaseReference mDatabase;
@@ -32,11 +34,15 @@ public class FoodAddActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Spinner spinner = binding.categories;
         ArrayList<String> categories = new ArrayList<>();
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(arrayAdapter);
         categories.add(0, "Category");
         mDatabase.child("Categories").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 categories.add(snapshot.getValue().toString());
+                arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -59,9 +65,7 @@ public class FoodAddActivity extends AppCompatActivity {
 
             }
         });
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(arrayAdapter);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -75,11 +79,12 @@ public class FoodAddActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        Markwon markwon = Markwon.create(this);
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food("1", binding.edtName.getText().toString(), binding.edtDescription.getText().toString(), catogoryId);
-                mDatabase.child("Food").push().setValue(food);
+                Food food = new Food(binding.edtImageUrl.getText().toString().trim(), binding.edtName.getText().toString().trim(), binding.edtDescription.getText().toString().trim(), catogoryId);
+                mDatabase.child("Foods").push().setValue(food);
             }
         });
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {

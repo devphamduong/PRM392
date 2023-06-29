@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.prm392.databinding.ActivityFoodDetailsBinding;
 import com.squareup.picasso.Picasso;
 
+import io.noties.markwon.Markwon;
+
 public class FoodDetailsActivity extends AppCompatActivity {
     ActivityFoodDetailsBinding binding;
 
@@ -31,7 +33,8 @@ public class FoodDetailsActivity extends AppCompatActivity {
                     .error(R.drawable.ic_error_loading)
                     .into(binding.img);
             binding.txtName.setText(food.getName());
-            binding.txtDescription.setText(food.getDescription());
+            Markwon markwon = Markwon.create(this);
+            markwon.setMarkdown(binding.txtDescription, food.getDescription());
         }
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override

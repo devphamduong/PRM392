@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.prm392.databinding.ActivityFoodEditBinding;
 import com.squareup.picasso.Picasso;
 
+import io.noties.markwon.Markwon;
+
 public class FoodEditActivity extends AppCompatActivity {
     ActivityFoodEditBinding binding;
 
@@ -31,7 +33,8 @@ public class FoodEditActivity extends AppCompatActivity {
                     .error(R.drawable.ic_error_loading)
                     .into(binding.img);
             binding.edtName.setText(food.getName());
-            binding.edtDescription.setText(food.getDescription());
+            Markwon markwon = Markwon.create(this);
+            markwon.setMarkdown(binding.edtDescription, food.getDescription());
         }
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.prm392.databinding.FragmentManagerBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -23,7 +30,8 @@ import java.util.ArrayList;
  */
 public class ManagerFragment extends Fragment {
     FragmentManagerBinding binding;
-    FirebaseAuth auth;
+    FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
     FirebaseUser user;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,38 +78,51 @@ public class ManagerFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentManagerBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         if (user == null) {
             GoToLogin();
         } else {
 //            setSupportActionBar(binding.toolbar);
             ArrayList<Food> foods = new ArrayList<>();
-            Food food1 = new Food("https://www.pngitem.com/pimgs/m/219-2198825_transparent-rice-clipart-transparent-fried-rice-clipart-hd.png", "Pork skin", "High fat", 1);
-            Food food2 = new Food("https://www.pngitem.com/pimgs/m/219-2198825_transparent-rice-clipart-transparent-fried-rice-clipart-hd.png", "Chicken breast", "What Is Chicken Breast?\n" +
-                    "\n" +
-                    "The chicken breast is a lean cut of meat taken from the pectoral muscle on the underside of the chicken. Each whole chicken contains one chicken breast with two halves, which are typically separated during the butchering process and sold as individual breasts. Given its desirable white meat and health benefits, boneless chicken breast meat is the most expensive cut of chicken in comparison to chicken thighs, wings, and drumsticks.\n" +
-                    "\n" +
-                    "This versatile cut can be grilled, baked, roasted, fried, barbecued, and boiled in countless ways. No matter the cooking method, chicken should always be handled with care, and the areas, utensils, and hands that have been in contact with the raw chicken should be washed thoroughly with soap and hot water to prevent food safety risks." +
-                    "Chicken Breast Nutrition Facts\n" +
-                    "The chicken breast is a particularly healthy part of this already nutritious bird, as it is low in fat and a good source of protein. The majority of chicken fat is concentrated in the skin, so chicken breasts are typically sold skinless and boneless.\n" +
-                    "\n" +
-                    "According to the USDA, the average 4-ounce serving size of raw boneless skinless chicken breast contains approximately:\n" +
-                    "\n" +
-                    "110 calories\n" +
-                    "26 grams of protein\n" +
-                    "1 gram of fat\n" +
-                    "75 milligrams of cholesterol\n" +
-                    "85 milligrams of sodium\n" +
-                    "\n" +
-                    "In comparison, the same portion of skin-on chicken breast—like that of a rotisserie chicken—contains 172 calories, 9.3 grams of total fat, and slightly reduced levels of protein. On average, one small chicken breast contains 55 percent of a person’s recommended protein intake, based on the suggested daily values for a 2,000 calorie diet. The exact nutritional value and calorie count of an individual chicken breast can fluctuate depending on the size and whether the bird was pasture raised, free range, cage free, or caged.", 1);
-            foods.add(food1);
-            foods.add(food2);
             FoodManagerAdapter adapter = new FoodManagerAdapter(foods);
             RecyclerView rec = binding.rvManagerFoods;
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
             rec.setLayoutManager(layoutManager);
             rec.setAdapter(adapter);
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.placeholderText.setVisibility(View.VISIBLE);
+            mDatabase.child("Foods").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    Food food = snapshot.getValue(Food.class);
+                    foods.add(food);
+                    adapter.notifyDataSetChanged();
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.placeholderText.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
 
             binding.btnActionAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
