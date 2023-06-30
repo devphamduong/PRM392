@@ -24,8 +24,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import io.noties.markwon.Markwon;
-
 public class FoodEditActivity extends AppCompatActivity {
     ActivityFoodEditBinding binding;
     private DatabaseReference mDatabase;
@@ -44,8 +42,7 @@ public class FoodEditActivity extends AppCompatActivity {
             LoadImage(food.getImage());
             binding.edtImageUrl.setText(food.getImage());
             binding.edtName.setText(food.getName());
-            Markwon markwon = Markwon.create(this);
-            markwon.setMarkdown(binding.edtDescription, food.getDescription());
+            binding.edtDescription.setText(food.getDescription());
             Spinner spinner = binding.categories;
             ArrayList<String> categories = new ArrayList<>();
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);

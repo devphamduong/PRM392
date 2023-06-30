@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.prm392.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -23,7 +29,8 @@ import java.util.ArrayList;
  */
 public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
-    FirebaseAuth auth;
+    FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
     FirebaseUser user;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -71,22 +78,41 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         if (user == null) {
             GoToLogin();
         } else {
 //            setSupportActionBar(binding.toolbar);
             ArrayList<Food> foods = new ArrayList<>();
-            Food food1 = new Food("1", "https://www.pngitem.com/pimgs/m/219-2198825_transparent-rice-clipart-transparent-fried-rice-clipart-hd.png", "Pork skin", "High fat", 1);
-            Food food2 = new Food("1", "https://www.pngitem.com/pimgs/m/219-2198825_transparent-rice-clipart-transparent-fried-rice-clipart-hd.png", "Chicken breast", "High protein but low on fat", 1);
-            foods.add(food1);
-            foods.add(food2);
             FoodAdapter adapter = new FoodAdapter(foods);
             RecyclerView rec = binding.rvFoods;
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
             rec.setLayoutManager(layoutManager);
             rec.setAdapter(adapter);
+//            binding.progressBar.setVisibility(View.VISIBLE);
+//            binding.placeholderText.setVisibility(View.VISIBLE);
+            mDatabase.child("Foods").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    foods.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        Food food = ds.getValue(Food.class);
+                        if (food.getIsEnabled()) {
+                            foods.add(food);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+//                    binding.progressBar.setVisibility(View.GONE);
+//                    binding.placeholderText.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
         return view;
     }

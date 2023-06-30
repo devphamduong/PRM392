@@ -55,6 +55,7 @@
             android:layout_height="wrap_content"
             app:icon="@android:drawable/ic_menu_search"
             app:iconSize="30dp"
+            android:background="@drawable/custom_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/edt_serach"
@@ -65,6 +66,7 @@
             android:layout_width="115dp"
             android:layout_height="wrap_content"
             android:text="Meat"
+            android:background="@drawable/custom_button"
             app:layout_constraintEnd_toStartOf="@+id/btn_vege"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,6 +77,7 @@
             android:layout_width="115dp"
             android:layout_height="wrap_content"
             android:text="Vegetable"
+            android:background="@drawable/custom_button"
             app:layout_constraintBottom_toBottomOf="@+id/btn_meat"
             app:layout_constraintEnd_toStartOf="@+id/btn_fruit"
             app:layout_constraintHorizontal_bias="0.5"
@@ -87,6 +90,7 @@
             android:layout_width="115dp"
             android:layout_height="wrap_content"
             android:text="Fruit"
+            android:background="@drawable/custom_button"
             app:layout_constraintBottom_toBottomOf="@+id/btn_vege"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -117,6 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Show all"
+            android:background="@drawable/custom_button"
             app:layout_constraintBottom_toBottomOf="@+id/txt_popular"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -133,6 +138,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_popular" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/placeholderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Loading data..."
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -8,6 +8,7 @@ public class Food implements Serializable {
     private String name;
     private String description;
     private int categoryId;
+    private boolean isEnabled;
 
     public String getId() {
         return id;
@@ -49,6 +50,14 @@ public class Food implements Serializable {
         this.categoryId = categoryId;
     }
 
+    public boolean getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
+
     public Food() {
     }
 
@@ -58,5 +67,6 @@ public class Food implements Serializable {
         this.name = name;
         this.description = description;
         this.categoryId = categoryId;
+        this.isEnabled = true;
     }
 }

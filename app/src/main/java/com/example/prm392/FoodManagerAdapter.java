@@ -11,14 +11,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.FoodHolder> {
     private ArrayList<Food> foods;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
     public FoodManagerAdapter(ArrayList<Food> list) {
         this.foods = list;
@@ -67,7 +73,24 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
         holder.btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "This is delete", Toast.LENGTH_SHORT).show();
+                FoodDeleteDialog dialog = FoodDeleteDialog.newInstance(foods.get(position).getName());
+                dialog.setConfirmationListener(new FoodDeleteDialog.DeleteConfirmationListener() {
+                    @Override
+                    public void onConfirmDelete() {
+                        // Perform the delete action here
+                        mDatabase.child("Foods").child(foods.get(position).getId()).child("isEnabled").setValue(false, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                if (error == null) {
+                                    Toast.makeText(v.getContext(), "Deleted successfully", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(v.getContext(), "Failed to delete", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                });
+                dialog.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), "FoodDeleteDialog");
             }
         });
     }
