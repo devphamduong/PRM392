@@ -2,6 +2,8 @@ package com.example.prm392;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -115,6 +118,51 @@ public class ManagerFragment extends Fragment {
                 }
             });
 
+            binding.edtSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String searchValue = s.toString().trim();
+                    Query query;
+                    if (searchValue.isEmpty()) {
+                        // If the search value is empty, retrieve all foods
+                        query = mDatabase.child("Foods");
+                    } else {
+                        // Perform the search based on the name property
+                        query = mDatabase.child("Foods")
+                                .orderByChild("name")
+                                .startAt(searchValue)
+                                .endAt(searchValue + "\uf8ff");
+                    }
+                    query.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            foods.clear();
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                Food food = ds.getValue(Food.class);
+                                if (food != null && food.getIsEnabled()) {
+                                    foods.add(food);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // Handle any errors that occur during the search operation
+                        }
+                    });
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // This method is called after the text has been changed.
+                    // You can perform any necessary operations here.
+                }
+            });
             binding.btnActionAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

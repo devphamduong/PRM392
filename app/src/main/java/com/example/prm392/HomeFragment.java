@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment {
                     foods.clear();
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         Food food = ds.getValue(Food.class);
-                        if (food.getIsEnabled()) {
+                        if (food != null && food.getIsEnabled()) {
                             foods.add(food);
                         }
                     }
