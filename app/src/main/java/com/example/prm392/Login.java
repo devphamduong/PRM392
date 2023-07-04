@@ -21,16 +21,16 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity {
     ActivityLoginBinding binding;
-    FirebaseAuth auth;
+    FirebaseAuth mAuth;
     TextInputEditText edt_email, edt_password;
     ProgressBar progressBar;
     Button btn_signin;
-    TextView registerNow;
+    TextView txt_registerNow;
 
 //    @Override
 //    public void onStart() {
 //        super.onStart();
-//        FirebaseUser currentUser = auth.getCurrentUser();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
 //        if (currentUser == null) {
 //            GoToRegister();
 //        }
@@ -41,15 +41,15 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        auth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         edt_email = binding.edtEmail;
         edt_password = binding.edtPassword;
         progressBar = binding.progressBar;
         btn_signin = binding.btnSignin;
-        registerNow = binding.registerNow;
+        txt_registerNow = binding.txtRegisterNow;
         SignIn("pduong244@gmail.com", "123456");
 
-        registerNow.setOnClickListener(new View.OnClickListener() {
+        txt_registerNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoToRegister();
@@ -76,7 +76,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void SignIn(String email, String password) {
-        auth.signInWithEmailAndPassword(email, password)
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

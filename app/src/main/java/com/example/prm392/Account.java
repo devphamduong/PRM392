@@ -3,7 +3,7 @@ package com.example.prm392;
 public class Account {
     private String id;
     private String avatar;
-    private String name;
+    private String userName;
     private String email;
     private String password;
 
@@ -23,12 +23,12 @@ public class Account {
         this.avatar = avatar;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {
@@ -50,10 +50,10 @@ public class Account {
     public Account() {
     }
 
-    public Account(String id, String avatar, String name, String email, String password) {
+    public Account(String id, String avatar, String userName, String email, String password) {
         this.id = id;
         this.avatar = avatar;
-        this.name = name;
+        this.userName = userName;
         this.email = email;
         this.password = password;
     }

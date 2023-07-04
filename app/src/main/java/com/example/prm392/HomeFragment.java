@@ -85,6 +85,21 @@ public class HomeFragment extends Fragment {
             GoToLogin();
         } else {
 //            setSupportActionBar(binding.toolbar);
+            mDatabase.child("Accounts").orderByChild("email").equalTo(user.getEmail()).addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Account account = dataSnapshot.getValue(Account.class);
+                        binding.txtHello.setText("Hello " + (account.getUserName() != null ? account.getUserName() : "User"));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             ArrayList<Food> foods = new ArrayList<>();
             FoodAdapter adapter = new FoodAdapter(foods);
             RecyclerView rec = binding.rvFoods;
