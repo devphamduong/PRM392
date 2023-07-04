@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,7 @@ public class HomeFragment extends Fragment {
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
     FirebaseUser user;
+    Button btn_meat, btn_vege, btn_fruit;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -126,6 +128,30 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
+                }
+            });
+            binding.btnMeat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), FoodCategoryActivity.class);
+                    intent.putExtra("categoryId", 1);
+                    startActivity(intent);
+                }
+            });
+            binding.btnVege.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), FoodCategoryActivity.class);
+                    intent.putExtra("categoryId", 2);
+                    startActivity(intent);
+                }
+            });
+            binding.btnFruit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), FoodCategoryActivity.class);
+                    intent.putExtra("categoryId", 3);
+                    startActivity(intent);
                 }
             });
         }

@@ -45,7 +45,6 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
                 .error(R.drawable.ic_error_loading)
                 .into(holder.image);
         holder.txt_name.setText(foods.get(position).getName());
-        holder.txt_key.setText(foods.get(position).getId());
         holder.btn_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,7 +102,6 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
     class FoodHolder extends RecyclerView.ViewHolder { //đại diện cho layout row_chapter
         ImageView image;
         TextView txt_name;
-        TextView txt_key;
         ImageView btn_details;
         ImageView btn_edit;
         ImageView btn_delete;
@@ -112,7 +110,6 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
             super(itemView);
             image = itemView.findViewById(R.id.image);
             txt_name = itemView.findViewById(R.id.txt_name);
-            txt_key = itemView.findViewById(R.id.txt_key);
             btn_details = itemView.findViewById(R.id.btn_details);
             btn_edit = itemView.findViewById(R.id.btn_edit);
             btn_delete = itemView.findViewById(R.id.btn_delete);

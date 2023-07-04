@@ -8,7 +8,7 @@ public class Food implements Serializable {
     private String name;
     private String description;
     private int categoryId;
-    private boolean isEnabled;
+    private boolean isEnabled = true;
 
     public String getId() {
         return id;
