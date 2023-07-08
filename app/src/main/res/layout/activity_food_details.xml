@@ -57,6 +57,27 @@
                 android:enabled="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/nutrientChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
+
+        <LinearLayout
+            android:id="@+id/legendLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Note: Currency is in grams. Standard weight is 100g."
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"

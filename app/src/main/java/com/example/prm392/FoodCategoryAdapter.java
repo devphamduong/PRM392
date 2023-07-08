@@ -1,5 +1,7 @@
 package com.example.prm392;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,17 @@ public class FoodCategoryAdapter extends RecyclerView.Adapter<FoodCategoryAdapte
                 .error(R.drawable.ic_error_loading)
                 .into(holder.image);
         holder.txt_name.setText(foods.get(position).getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), 1);
+                Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
+                Bundle data = new Bundle();
+                data.putSerializable("food", food);
+                intent.putExtra("data", data);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

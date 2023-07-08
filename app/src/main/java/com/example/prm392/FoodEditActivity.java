@@ -42,6 +42,10 @@ public class FoodEditActivity extends AppCompatActivity {
             LoadImage(food.getImage());
             binding.edtImageUrl.setText(food.getImage());
             binding.edtName.setText(food.getName());
+            binding.edtCalories.setText(String.valueOf(food.getCalories()));
+            binding.edtCarbs.setText(String.valueOf(food.getCarbs()));
+            binding.edtFat.setText(String.valueOf(food.getFat()));
+            binding.edtProtein.setText(String.valueOf(food.getProtein()));
             binding.edtDescription.setText(food.getDescription());
             Spinner spinner = binding.categories;
             ArrayList<String> categories = new ArrayList<>();
@@ -101,6 +105,10 @@ public class FoodEditActivity extends AppCompatActivity {
                     Food newFood = new Food();
                     newFood.setId(food.getId());
                     newFood.setName(binding.edtName.getText().toString());
+                    newFood.setCalories(Float.parseFloat(binding.edtCalories.getText().toString()));
+                    newFood.setCarbs(Float.parseFloat(binding.edtCarbs.getText().toString()));
+                    newFood.setFat(Float.parseFloat(binding.edtFat.getText().toString()));
+                    newFood.setProtein(Float.parseFloat(binding.edtProtein.getText().toString()));
                     newFood.setCategoryId(catogoryId);
                     newFood.setDescription(binding.edtDescription.getText().toString());
                     newFood.setImage(binding.edtImageUrl.getText().toString());

@@ -40,33 +40,6 @@ public class FoodAddActivity extends AppCompatActivity {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
         categories.add(0, "Category");
-//        mDatabase.child("Categories").addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                categories.add(snapshot.getValue().toString());
-//                arrayAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
         mDatabase.child("Categories").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -117,7 +90,7 @@ public class FoodAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String key = mDatabase.child("Foods").push().getKey();
-                Food food = new Food(key, binding.edtImageUrl.getText().toString().trim(), binding.edtName.getText().toString().trim(), binding.edtDescription.getText().toString().trim(), catogoryId);
+                Food food = new Food(key, binding.edtImageUrl.getText().toString().trim(), binding.edtName.getText().toString().trim(), Float.parseFloat(binding.edtCalories.getText().toString().trim()), Float.parseFloat(binding.edtCarbs.getText().toString().trim()), Float.parseFloat(binding.edtFat.getText().toString().trim()), Float.parseFloat(binding.edtProtein.getText().toString().trim()), binding.edtDescription.getText().toString().trim(), catogoryId);
                 mDatabase.child("Foods").child(key).setValue(food, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {

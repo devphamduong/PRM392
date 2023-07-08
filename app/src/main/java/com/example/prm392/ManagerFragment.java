@@ -95,7 +95,7 @@ public class ManagerFragment extends Fragment {
             rec.setAdapter(adapter);
             binding.progressBar.setVisibility(View.VISIBLE);
             binding.placeholderText.setVisibility(View.VISIBLE);
-            mDatabase.child("Foods").addValueEventListener(new ValueEventListener() {
+            mDatabase.child("Foods").orderByChild("enabled").equalTo(true).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     foods.clear();
@@ -103,7 +103,7 @@ public class ManagerFragment extends Fragment {
                     binding.placeholderText.setVisibility(View.VISIBLE);
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         Food food = ds.getValue(Food.class);
-                        if (food.getIsEnabled()) {
+                        if (food != null) {
                             foods.add(food);
                         }
                     }
@@ -143,7 +143,7 @@ public class ManagerFragment extends Fragment {
                             foods.clear();
                             for (DataSnapshot ds : snapshot.getChildren()) {
                                 Food food = ds.getValue(Food.class);
-                                if (food != null && food.getIsEnabled()) {
+                                if (food != null && food.isEnabled()) {
                                     foods.add(food);
                                 }
                             }

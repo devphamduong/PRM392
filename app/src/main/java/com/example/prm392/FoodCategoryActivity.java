@@ -47,6 +47,23 @@ public class FoodCategoryActivity extends AppCompatActivity {
             rec.setAdapter(adapter);
             binding.progressBar.setVisibility(View.VISIBLE);
             binding.placeholderText.setVisibility(View.VISIBLE);
+            mDatabase.child("Categories").addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (Integer.parseInt(ds.getKey()) == categoryId) {
+                            binding.txtCategory.setText("Category: " + ds.getValue(String.class));
+                            break;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             mDatabase.child("Foods").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -55,7 +72,7 @@ public class FoodCategoryActivity extends AppCompatActivity {
                     binding.placeholderText.setVisibility(View.VISIBLE);
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         Food food = ds.getValue(Food.class);
-                        if (food.getIsEnabled() && food.getCategoryId() == categoryId) {
+                        if (food != null && food.isEnabled() && food.getCategoryId() == categoryId) {
                             foods.add(food);
                         }
                     }

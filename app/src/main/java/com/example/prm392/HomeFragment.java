@@ -110,13 +110,13 @@ public class HomeFragment extends Fragment {
             rec.setAdapter(adapter);
 //            binding.progressBar.setVisibility(View.VISIBLE);
 //            binding.placeholderText.setVisibility(View.VISIBLE);
-            mDatabase.child("Foods").addValueEventListener(new ValueEventListener() {
+            mDatabase.child("Foods").orderByChild("enabled").equalTo(true).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     foods.clear();
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         Food food = ds.getValue(Food.class);
-                        if (food != null && food.getIsEnabled()) {
+                        if (food != null) {
                             foods.add(food);
                         }
                     }

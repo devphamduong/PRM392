@@ -1,11 +1,12 @@
 package com.example.prm392;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +37,17 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
                 .error(R.drawable.ic_error_loading)
                 .into(holder.image);
         holder.tv_name.setText(foods.get(position).getName());
-//        holder.tv_description.setText(foods.get(position).getDescription());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), 1);
+                Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
+                Bundle data = new Bundle();
+                data.putSerializable("food", food);
+                intent.putExtra("data", data);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -53,14 +64,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
             super(itemView);
             image = itemView.findViewById(R.id.image);
             tv_name = itemView.findViewById(R.id.txt_name);
-//            tv_description = itemView.findViewById(R.id.tv_description);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    Toast.makeText(itemView.getContext(), "pos = " + pos, Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 }
