@@ -48,7 +48,7 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
         holder.btn_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), 1);
+                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), foods.get(position).getCategoryId());
                 Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);
@@ -59,7 +59,7 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), 1);
+                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), foods.get(position).getCategoryId());
                 Intent intent = new Intent(v.getContext(), FoodEditActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);

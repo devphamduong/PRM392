@@ -56,8 +56,10 @@ public class FoodDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot ds : snapshot.getChildren()) {
-                        binding.txtCategory.setText(Integer.parseInt(ds.getKey()) == food.getCategoryId() ? ds.getValue().toString() : "NaN");
-                        return;
+                        if (Integer.parseInt(ds.getKey()) == food.getCategoryId()) {
+                            binding.txtCategory.setText(Integer.parseInt(ds.getKey()) == food.getCategoryId() ? ds.getValue().toString() : "NaN");
+                            break;
+                        }
                     }
                 }
 
@@ -86,19 +88,19 @@ public class FoodDetailsActivity extends AppCompatActivity {
             if (proteinWeight > 0) {
                 String proteinCaption = String.format(Locale.getDefault(), "%.1f%%", proteinPercentage);
                 entries.add(new PieEntry(proteinPercentage, proteinCaption));
-                labels.add(String.format(Locale.getDefault(), "Protein\n%.1f%% (%.0fg)", proteinPercentage, proteinWeight));
+                labels.add(String.format(Locale.getDefault(), "Protein\n%.1f%% (" + (proteinWeight == (int) proteinWeight ? "%.0fg" : "%.2fg") + ")", proteinPercentage, proteinWeight));
             }
 
             if (fatWeight > 0) {
                 String fatCaption = String.format(Locale.getDefault(), "%.1f%%", fatPercentage);
                 entries.add(new PieEntry(fatPercentage, fatCaption));
-                labels.add(String.format(Locale.getDefault(), "Fat\n%.1f%% (%.0fg)", fatPercentage, fatWeight));
+                labels.add(String.format(Locale.getDefault(), "Fat\n%.1f%% (" + (fatWeight == (int) fatWeight ? "%.0fg" : "%.2fg") + ")", fatPercentage, fatWeight));
             }
 
             if (carbsWeight > 0) {
                 String carbsCaption = String.format(Locale.getDefault(), "%.1f%%", carbsPercentage);
                 entries.add(new PieEntry(carbsPercentage, carbsCaption));
-                labels.add(String.format(Locale.getDefault(), "Carbs\n%.1f%% (%.0fg)", carbsPercentage, carbsWeight));
+                labels.add(String.format(Locale.getDefault(), "Carbs\n%.1f%% (" + (carbsWeight == (int) carbsWeight ? "%.0fg" : "%.2fg") + ")", carbsPercentage, carbsWeight));
             }
 
             // Create a PieDataSet with the entries
@@ -111,6 +113,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
             // Create a PieData object with the dataSet
             PieData data = new PieData(dataSet);
             nutrientChart.setData(data);
+            nutrientChart.setEntryLabelColor(Color.BLACK);
 
             // Set the center text for total calories
             String centerText = String.format(Locale.getDefault(), "Calories\n%.0f", totalCalories);
