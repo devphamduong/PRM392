@@ -77,7 +77,7 @@ public class FoodAddActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                LoadImage(s.toString());
+                LoadImage(!s.toString().isEmpty() ? s.toString() : "empty_url");
             }
 
             @Override
