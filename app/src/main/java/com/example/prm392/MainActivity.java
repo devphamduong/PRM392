@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
             selectedFragment = new HomeFragment();
         } else if (itemId == R.id.managerFragment) {
             selectedFragment = new ManagerFragment();
+        } else if (itemId == R.id.othersFragment) {
+            selectedFragment = new OthersFragment();
         }
         // It will help to replace the
         // one fragment to other.
