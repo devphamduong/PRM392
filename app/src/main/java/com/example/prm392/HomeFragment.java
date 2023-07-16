@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.prm392.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -23,8 +30,10 @@ import java.util.ArrayList;
  */
 public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
-    FirebaseAuth auth;
+    FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
     FirebaseUser user;
+    Button btn_meat, btn_vege, btn_fruit;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,22 +80,80 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         if (user == null) {
             GoToLogin();
         } else {
 //            setSupportActionBar(binding.toolbar);
+            mDatabase.child("Accounts").orderByChild("email").equalTo(user.getEmail()).addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Account account = dataSnapshot.getValue(Account.class);
+                        binding.txtHello.setText("Hello " + (account.getUserName() != null ? account.getUserName() : "User"));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             ArrayList<Food> foods = new ArrayList<>();
-            Food food1 = new Food(R.drawable.ic_launcher_foreground, "Pork skin", "High fat");
-            Food food2 = new Food(R.drawable.ic_launcher_foreground, "Chicken breast", "High protein but low on fat");
-            foods.add(food1);
-            foods.add(food2);
             FoodAdapter adapter = new FoodAdapter(foods);
             RecyclerView rec = binding.rvFoods;
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
             rec.setLayoutManager(layoutManager);
             rec.setAdapter(adapter);
+//            binding.progressBar.setVisibility(View.VISIBLE);
+//            binding.placeholderText.setVisibility(View.VISIBLE);
+            mDatabase.child("Foods").orderByChild("enabled").equalTo(true).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    foods.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        Food food = ds.getValue(Food.class);
+                        if (food != null) {
+                            foods.add(food);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+//                    binding.progressBar.setVisibility(View.GONE);
+//                    binding.placeholderText.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            binding.btnMeat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), FoodCategoryActivity.class);
+                    intent.putExtra("categoryId", 1);
+                    startActivity(intent);
+                }
+            });
+            binding.btnVege.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), FoodCategoryActivity.class);
+                    intent.putExtra("categoryId", 2);
+                    startActivity(intent);
+                }
+            });
+            binding.btnFruit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), FoodCategoryActivity.class);
+                    intent.putExtra("categoryId", 3);
+                    startActivity(intent);
+                }
+            });
         }
         return view;
     }

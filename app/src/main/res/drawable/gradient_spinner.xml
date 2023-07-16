@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<item>
+    <shape android:shape="rectangle">
+        <stroke
+            android:color="#726D77"
+            android:width="1dp"/>
+        <corners android:radius="4dp"/>
+        <padding
+            android:left="8dp"
+            android:right="8dp" />
+    </shape>
+</item>
+    <item
+        android:width="24dp"
+        android:height="24dp"
+        android:drawable="@drawable/ic_spinner_arrow"
+        android:gravity="right|center_vertical">
+    </item>
+</layer-list>

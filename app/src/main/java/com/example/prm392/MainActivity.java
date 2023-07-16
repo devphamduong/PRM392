@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
-
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
@@ -36,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
             selectedFragment = new HomeFragment();
         } else if (itemId == R.id.managerFragment) {
             selectedFragment = new ManagerFragment();
-        } else if (itemId == R.id.profileFragment) {
-            selectedFragment = new ProfileFragment();
         }
         // It will help to replace the
         // one fragment to other.

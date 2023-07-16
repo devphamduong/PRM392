@@ -2,15 +2,28 @@ package com.example.prm392;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prm392.databinding.FragmentManagerBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,7 +32,8 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class ManagerFragment extends Fragment {
     FragmentManagerBinding binding;
-    FirebaseAuth auth;
+    FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
     FirebaseUser user;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,12 +80,96 @@ public class ManagerFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentManagerBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         if (user == null) {
             GoToLogin();
         } else {
-//
+//            setSupportActionBar(binding.toolbar);
+            ArrayList<Food> foods = new ArrayList<>();
+            FoodManagerAdapter adapter = new FoodManagerAdapter(foods);
+            RecyclerView rec = binding.rvManagerFoods;
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+            rec.setLayoutManager(layoutManager);
+            rec.setAdapter(adapter);
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.placeholderText.setVisibility(View.VISIBLE);
+            mDatabase.child("Foods").orderByChild("enabled").equalTo(true).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    foods.clear();
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    binding.placeholderText.setVisibility(View.VISIBLE);
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        Food food = ds.getValue(Food.class);
+                        if (food != null) {
+                            foods.add(food);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.placeholderText.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            binding.edtSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String searchValue = s.toString().trim();
+                    Query query;
+                    if (searchValue.isEmpty()) {
+                        // If the search value is empty, retrieve all foods
+                        query = mDatabase.child("Foods");
+                    } else {
+                        // Perform the search based on the name property
+                        query = mDatabase.child("Foods")
+                                .orderByChild("name")
+                                .startAt(searchValue)
+                                .endAt(searchValue + "\uf8ff");
+                    }
+                    query.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            foods.clear();
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                Food food = ds.getValue(Food.class);
+                                if (food != null && food.isEnabled()) {
+                                    foods.add(food);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // Handle any errors that occur during the search operation
+                        }
+                    });
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // This method is called after the text has been changed.
+                    // You can perform any necessary operations here.
+                }
+            });
+            binding.btnActionAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), FoodAddActivity.class);
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
         return view;
     }

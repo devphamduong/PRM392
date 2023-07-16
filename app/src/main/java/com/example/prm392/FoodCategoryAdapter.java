@@ -11,22 +11,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
+public class FoodCategoryAdapter extends RecyclerView.Adapter<FoodCategoryAdapter.FoodHolder> {
     private ArrayList<Food> foods;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-    public FoodAdapter(ArrayList<Food> list) {
+    public FoodCategoryAdapter(ArrayList<Food> list) {
         this.foods = list;
     }
 
     @NonNull
     @Override
-    public FoodHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_food, parent, false);
-        return new FoodHolder(v);
+    public FoodCategoryAdapter.FoodHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_food_category, parent, false);
+        return new FoodCategoryAdapter.FoodHolder(v);
     }
 
     @Override
@@ -36,11 +39,11 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
                 .placeholder(R.drawable.ic_image_loading)
                 .error(R.drawable.ic_error_loading)
                 .into(holder.image);
-        holder.tv_name.setText(foods.get(position).getName());
+        holder.txt_name.setText(foods.get(position).getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), foods.get(position).getCategoryId());
+                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), 1);
                 Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);
@@ -57,13 +60,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
 
     class FoodHolder extends RecyclerView.ViewHolder { //đại diện cho layout row_chapter
         ImageView image;
-        TextView tv_name;
-        TextView tv_description;
+        TextView txt_name;
 
         public FoodHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
-            tv_name = itemView.findViewById(R.id.txt_name);
+            txt_name = itemView.findViewById(R.id.txt_name);
         }
     }
 }

@@ -9,7 +9,10 @@
     <item android:title="Manager"
         android:id="@+id/managerFragment"
         android:icon="@drawable/ic_build"/>
+<<<<<<< HEAD
     <item android:title="Profile"
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_profile"/>
+=======
+>>>>>>> 7eaf5949d59644e333505385d5bd47bce31e6079
 </menu>
