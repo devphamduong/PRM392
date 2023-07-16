@@ -93,7 +93,10 @@ public class HomeFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Account account = dataSnapshot.getValue(Account.class);
-                        binding.txtHello.setText("Hello " + (account.getUserName() != null ? account.getUserName() : "User"));
+                        if (account.getUserName() != null) {
+                            binding.txtHello.setText("Hello " + (account.getUserName() != null ? account.getUserName() : "User"));
+                            break;
+                        }
                     }
                 }
 
@@ -142,7 +145,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity().getApplicationContext(), FoodCategoryActivity.class);
-                    intent.putExtra("categoryId", 2);
+                    intent.putExtra("categoryId", 3);
                     startActivity(intent);
                 }
             });
@@ -150,7 +153,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity().getApplicationContext(), FoodCategoryActivity.class);
-                    intent.putExtra("categoryId", 3);
+                    intent.putExtra("categoryId", 2);
                     startActivity(intent);
                 }
             });

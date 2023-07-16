@@ -25,4 +25,9 @@
         android:name="com.example.prm392.ManagerFragment"
         android:label="fragment_manager"
         tools:layout="@layout/fragment_manager" />
+    <fragment
+        android:id="@+id/othersFragment"
+        android:name="com.example.prm392.OthersFragment"
+        android:label="fragment_others"
+        tools:layout="@layout/fragment_others" />
 </navigation>

@@ -64,7 +64,7 @@ public class FoodCategoryActivity extends AppCompatActivity {
 
                 }
             });
-            mDatabase.child("Foods").addValueEventListener(new ValueEventListener() {
+            mDatabase.child("Foods").orderByChild("enabled").equalTo(true).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     foods.clear();
@@ -72,7 +72,7 @@ public class FoodCategoryActivity extends AppCompatActivity {
                     binding.placeholderText.setVisibility(View.VISIBLE);
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         Food food = ds.getValue(Food.class);
-                        if (food != null && food.isEnabled() && food.getCategoryId() == categoryId) {
+                        if (food != null && food.getCategoryId() == categoryId) {
                             foods.add(food);
                         }
                     }
