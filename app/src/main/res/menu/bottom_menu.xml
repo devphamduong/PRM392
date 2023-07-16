@@ -8,12 +8,7 @@
     <item
         android:title="Manager"
         android:id="@+id/managerFragment"
-
-        android:icon="@drawable/ic_build"/>
-
-    <item android:title="Profile"
-        android:id="@+id/profileFragment"
-        android:icon="@drawable/ic_profile"/>
+        android:icon="@drawable/ic_build" />
     <item
         android:id="@+id/othersFragment"
         android:title="Others"
