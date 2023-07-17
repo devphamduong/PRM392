@@ -6,6 +6,7 @@ public class Account {
     private String userName;
     private String email;
     private String password;
+    private int roleId;
 
     public String getId() {
         return id;
@@ -47,14 +48,23 @@ public class Account {
         this.password = password;
     }
 
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
     public Account() {
     }
 
-    public Account(String id, String avatar, String userName, String email, String password) {
+    public Account(String id, String avatar, String userName, String email, String password, int roleId) {
         this.id = id;
         this.avatar = avatar;
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.roleId = roleId;
     }
 }
