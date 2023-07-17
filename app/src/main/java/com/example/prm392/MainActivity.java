@@ -2,6 +2,7 @@ package com.example.prm392;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
             selectedFragment = new ManagerFragment();
         } else if (itemId == R.id.othersFragment) {
             selectedFragment = new OthersFragment();
+        }else if(itemId == R.id.profileFragment){
+            selectedFragment = new ProfileFragment();
         }
         // It will help to replace the
         // one fragment to other.
@@ -45,4 +48,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     };
+
 }
