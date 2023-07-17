@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BlogListFragment">
+
+    <TextView
+        android:id="@+id/lbl_publish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Blogs"
+        android:textColor="@color/black"
+        android:textSize="27sp" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="45dp"
+        android:layout_height="5dp"
+        android:layout_below="@id/lbl_publish"
+        android:layout_alignStart="@id/lbl_publish"
+        android:background="@drawable/light_bg"
+        android:backgroundTint="@color/dark_black" />
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view1"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="15dp"
+        android:background="@drawable/light_bg"
+        app:queryHint="Search Blogs"
+        android:queryHint="Search Blogs"/>
+
+</RelativeLayout>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BlogAddFragment">
+
+    <TextView
+        android:id="@+id/lbl_publish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Publish Blog"
+        android:textColor="@color/black"
+        android:textSize="27sp" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="45dp"
+        android:layout_height="5dp"
+        android:layout_below="@id/lbl_publish"
+        android:layout_alignStart="@id/lbl_publish"
+        android:background="@drawable/light_bg"
+        android:backgroundTint="@color/dark_black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view1"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view1"
+            android:layout_margin="15dp"
+            android:background="@drawable/stroke_bg"
+            app:cardCornerRadius="18dp">
+
+            <ImageView
+                android:id="@+id/img_blog"
+                android:layout_width="wrap_content"
+                android:layout_height="170dp"
+                android:scaleType="centerCrop"
+                android:visibility="invisible"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="wrap_content"
+                android:layout_height="170dp"
+                android:background="@drawable/stroke_bg" />
+
+            <TextView
+                android:id="@+id/tv_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Select an Image"
+                android:textColor="@color/black"
+                android:textSize="21sp" />
+        </androidx.cardview.widget.CardView>
+
+        <EditText
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/light_bg"
+            android:ems="10"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="Title"
+            android:padding="10dp"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/txt_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/light_bg"
+            android:ems="10"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="Description"
+            android:minHeight="180dp"
+            android:padding="10dp"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/txt_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/light_bg"
+            android:ems="10"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="Author Name"
+            android:padding="10dp"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btn_publish"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Publish"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_gravity="center"
+            android:textSize="19sp"/>
+    </LinearLayout>
+
+</RelativeLayout>
