@@ -100,6 +100,14 @@ public class ProfileFragment extends Fragment {
             }
             tvEmail.setText(email);
             Glide.with(this).load(photoUrl).error(R.drawable.ic_avatar_default).into(imgAvater);
+
+            binding.cardProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), ProfileUpdateActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
         return view;
     }
