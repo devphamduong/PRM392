@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -46,6 +47,8 @@ public class ProfileUpdateActivity extends AppCompatActivity {
     private Uri mUri;
     Context context;
 
+    private ProgressDialog progressDialog;
+
     final private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -59,7 +62,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                 mUri = uri;
                 try {
                     //ImageDecoder.Source source = ImageDecoder.createSource(getContentResolver(), uri);
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),mUri);
                     imgAvatar.setImageBitmap(bitmap);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -77,6 +80,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         imgAvatar = binding.imgAvatar2;
         btn_update_profile = binding.btnUpdateProfile;
         context = this;
+        progressDialog = new ProgressDialog(this);
         initListner();
         setUserInformation();
 
@@ -88,6 +92,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
             GoToLogin();
         }
         edt_fullname.setText(user.getDisplayName());
+        mUri = user.getPhotoUrl();
         Glide.with(ProfileUpdateActivity.this).load(user.getPhotoUrl()).error(R.drawable.ic_avatar_default).into(imgAvatar);
     }
 
@@ -150,6 +155,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
             GoToLogin();
             return;
         }
+        progressDialog.show();
         String strFullName = edt_fullname.getText().toString().trim();
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(strFullName)
@@ -160,6 +166,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             Toast.makeText(context,"Update profile successfully", Toast.LENGTH_SHORT).show();
                         }
