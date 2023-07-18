@@ -1,7 +1,9 @@
 package com.example.prm392;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -9,10 +11,18 @@ import com.example.prm392.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    FirebaseAuth auth;
+    FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
     FirebaseUser user;
 
     @Override
@@ -20,8 +30,47 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        auth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        user = mAuth.getCurrentUser();
+        // Clear existing menu items
+        bottomNavigationView.getMenu().clear();
+        ArrayList<String> roles = new ArrayList<>();
+        mDatabase.child("Roles").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    roles.add(ds.getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        mDatabase.child("Accounts").orderByChild("email").equalTo(user.getEmail()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Account account = dataSnapshot.getValue(Account.class);
+                    switch (roles.get(account.getRoleId() - 1).toLowerCase().trim()) {
+                        case "user":
+                            bottomNavigationView.inflateMenu(R.menu.bottom_menu);
+                            break;
+                        case "admin":
+                            bottomNavigationView.inflateMenu(R.menu.admin_bottom_menu);
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
     }
 
@@ -39,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
             selectedFragment = new ManagerFragment();
         } else if (itemId == R.id.othersFragment) {
             selectedFragment = new OthersFragment();
+        } else if (itemId == R.id.profileFragment) {
+            selectedFragment = new ProfileFragment();
         }
         // It will help to replace the
         // one fragment to other.
@@ -47,4 +98,10 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     };
+
+    private void GoToLogin() {
+        Intent intent = new Intent(getApplicationContext(), Login.class);
+        startActivity(intent);
+        finish();
+    }
 }

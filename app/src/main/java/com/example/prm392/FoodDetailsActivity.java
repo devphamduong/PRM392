@@ -116,7 +116,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
             nutrientChart.setEntryLabelColor(Color.BLACK);
 
             // Set the center text for total calories
-            String centerText = String.format(Locale.getDefault(), "Calories\n%.0f", totalCalories);
+            String centerText = String.format(Locale.getDefault(), "%.0f\ncal", totalCalories);
             nutrientChart.setCenterText(centerText);
             nutrientChart.setCenterTextSize(16f);
 

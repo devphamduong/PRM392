@@ -47,7 +47,7 @@ public class Login extends AppCompatActivity {
         progressBar = binding.progressBar;
         btn_signin = binding.btnSignin;
         txt_registerNow = binding.txtRegisterNow;
-//        SignIn("pduong244@gmail.com", "123456");
+        SignIn("pduong244@gmail.com", "1234567");
 
         txt_registerNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +87,7 @@ public class Login extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(Login.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Wrong email or password", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

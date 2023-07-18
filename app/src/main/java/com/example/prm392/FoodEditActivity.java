@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prm392.databinding.ActivityFoodEditBinding;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -102,27 +103,35 @@ public class FoodEditActivity extends AppCompatActivity {
             binding.btnUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Food newFood = new Food();
-                    newFood.setId(food.getId());
-                    newFood.setName(binding.edtName.getText().toString());
-                    newFood.setCalories(Float.parseFloat(binding.edtCalories.getText().toString()));
-                    newFood.setCarbs(Float.parseFloat(binding.edtCarbs.getText().toString()));
-                    newFood.setFat(Float.parseFloat(binding.edtFat.getText().toString()));
-                    newFood.setProtein(Float.parseFloat(binding.edtProtein.getText().toString()));
-                    newFood.setCategoryId(catogoryId);
-                    newFood.setDescription(binding.edtDescription.getText().toString());
-                    newFood.setImage(binding.edtImageUrl.getText().toString());
-                    mDatabase.child("Foods").child(food.getId()).setValue(newFood, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                            if (error == null) {
-                                Toast.makeText(FoodEditActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
-                                finish();
-                            } else {
-                                Toast.makeText(FoodEditActivity.this, "Failed to update", Toast.LENGTH_SHORT).show();
-                            }
+                    if (!isEmpty(binding.edtName) && !isEmpty(binding.edtCalories) && !isEmpty(binding.edtCarbs) && !isEmpty(binding.edtFat) && !isEmpty(binding.edtProtein) && !isEmpty(binding.edtDescription)) {
+                        if (catogoryId > 0) {
+                            Food newFood = new Food();
+                            newFood.setId(food.getId());
+                            newFood.setName(binding.edtName.getText().toString());
+                            newFood.setCalories(Float.parseFloat(binding.edtCalories.getText().toString()));
+                            newFood.setCarbs(Float.parseFloat(binding.edtCarbs.getText().toString()));
+                            newFood.setFat(Float.parseFloat(binding.edtFat.getText().toString()));
+                            newFood.setProtein(Float.parseFloat(binding.edtProtein.getText().toString()));
+                            newFood.setCategoryId(catogoryId);
+                            newFood.setDescription(binding.edtDescription.getText().toString());
+                            newFood.setImage(!binding.edtImageUrl.getText().toString().isEmpty() ? binding.edtImageUrl.getText().toString() : "empty_url");
+                            mDatabase.child("Foods").child(food.getId()).setValue(newFood, new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                    if (error == null) {
+                                        Toast.makeText(FoodEditActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    } else {
+                                        Toast.makeText(FoodEditActivity.this, "Failed to update", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(FoodEditActivity.this, "Please select a category", Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    } else {
+                        Toast.makeText(FoodEditActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
             binding.btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -140,5 +149,9 @@ public class FoodEditActivity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_image_loading)
                 .error(R.drawable.ic_error_loading)
                 .into(binding.previewImage);
+    }
+
+    private boolean isEmpty(TextInputEditText value) {
+        return value.getText().toString().trim().isEmpty();
     }
 }
