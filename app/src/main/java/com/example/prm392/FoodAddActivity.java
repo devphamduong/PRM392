@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prm392.databinding.ActivityFoodAddBinding;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -89,21 +90,30 @@ public class FoodAddActivity extends AppCompatActivity {
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String key = mDatabase.child("Foods").push().getKey();
-                Food food = new Food(key, binding.edtImageUrl.getText().toString().trim(), binding.edtName.getText().toString().trim(), Float.parseFloat(binding.edtCalories.getText().toString().trim()), Float.parseFloat(binding.edtCarbs.getText().toString().trim()), Float.parseFloat(binding.edtFat.getText().toString().trim()), Float.parseFloat(binding.edtProtein.getText().toString().trim()), binding.edtDescription.getText().toString().trim(), catogoryId);
-                mDatabase.child("Foods").child(key).setValue(food, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        if (error == null) {
-                            Toast.makeText(FoodAddActivity.this, "Added successfully", Toast.LENGTH_SHORT).show();
-                            finish();
-                        } else {
-                            Toast.makeText(FoodAddActivity.this, "Failed to add", Toast.LENGTH_SHORT).show();
-                        }
+                if (!isEmpty(binding.edtName) && !isEmpty(binding.edtCalories) && !isEmpty(binding.edtCarbs) && !isEmpty(binding.edtFat) && !isEmpty(binding.edtProtein) && !isEmpty(binding.edtDescription)) {
+                    if (catogoryId > 0) {
+                        String key = mDatabase.child("Foods").push().getKey();
+                        Food food = new Food(key, !binding.edtImageUrl.getText().toString().trim().isEmpty() ? binding.edtImageUrl.getText().toString().trim() : "empty_url", binding.edtName.getText().toString().trim(), Float.parseFloat(binding.edtCalories.getText().toString().trim()), Float.parseFloat(binding.edtCarbs.getText().toString().trim()), Float.parseFloat(binding.edtFat.getText().toString().trim()), Float.parseFloat(binding.edtProtein.getText().toString().trim()), binding.edtDescription.getText().toString().trim(), catogoryId);
+                        mDatabase.child("Foods").child(key).setValue(food, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                if (error == null) {
+                                    Toast.makeText(FoodAddActivity.this, "Added successfully", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                } else {
+                                    Toast.makeText(FoodAddActivity.this, "Failed to add", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    } else {
+                        Toast.makeText(FoodAddActivity.this, "Please select a category", Toast.LENGTH_SHORT).show();
                     }
-                });
+                } else {
+                    Toast.makeText(FoodAddActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,5 +128,9 @@ public class FoodAddActivity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_image_loading)
                 .error(R.drawable.ic_error_loading)
                 .into(binding.previewImage);
+    }
+
+    private boolean isEmpty(TextInputEditText value) {
+        return value.getText().toString().trim().isEmpty();
     }
 }

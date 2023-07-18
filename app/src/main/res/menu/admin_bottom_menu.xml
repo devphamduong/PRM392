@@ -6,6 +6,10 @@
         android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
+        android:title="Manager"
+        android:id="@+id/managerFragment"
+        android:icon="@drawable/ic_build" />
+    <item
         android:id="@+id/othersFragment"
         android:title="Others"
         android:icon="@drawable/ic_others" />

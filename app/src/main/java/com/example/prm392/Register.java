@@ -108,7 +108,7 @@ public class Register extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             String key = mDatabase.child("Accounts").push().getKey();
-                            Account account = new Account(key, "https://winaero.com/blog/wp-content/uploads/2015/05/user-200.png", userName, email, password);
+                            Account account = new Account(key, "https://winaero.com/blog/wp-content/uploads/2015/05/user-200.png", userName, email, password, 2);
                             mDatabase.child("Accounts").child(key).setValue(account, new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
