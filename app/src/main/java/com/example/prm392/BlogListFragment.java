@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.prm392.databinding.FragmentBlogListBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +32,8 @@ public class BlogListFragment extends Fragment {
     Blog blog;
 
     DatabaseReference mDatabase;
+    FirebaseUser user;
+    FirebaseAuth mAuth;
 
     public BlogListFragment() {
     }
@@ -45,6 +49,24 @@ public class BlogListFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentBlogListBinding.inflate(inflater, container, false);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        mDatabase.child("Accounts").orderByChild("email").equalTo(user.getEmail()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Account account = dataSnapshot.getValue(Account.class);
+                    if(account.getRoleId() != 1){
+                        binding.btnActionAdd.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         binding.btnActionAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
