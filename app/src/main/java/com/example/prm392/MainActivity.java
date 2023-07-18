@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
         int itemId = item.getItemId();
         if (itemId == R.id.homeFragment) {
             selectedFragment = new HomeFragment();
+        } else if (itemId == R.id.blogFragment) {
+            selectedFragment = new BlogListFragment();
         } else if (itemId == R.id.managerFragment) {
             selectedFragment = new ManagerFragment();
         } else if (itemId == R.id.othersFragment) {
