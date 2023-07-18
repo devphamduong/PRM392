@@ -102,13 +102,6 @@ public class Account {
         this.password = password;
         this.roleId = roleId;
     }
-
-    public Account(String gender, String dob, String mobile) {
-        this.gender = gender;
-        this.dob = dob;
-        this.mobile = mobile;
-    }
-
     public Account(String id, String avatar, String fullname, String gender, String dob, String mobile, String userName, String email, String password, int roleId) {
         this.id = id;
         this.avatar = avatar;

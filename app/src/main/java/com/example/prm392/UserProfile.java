@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,6 +24,7 @@ public class UserProfile extends AppCompatActivity {
     private TextView textViewWelcome, textViewFullName, textViewEmail, textViewDoB, textViewGender, textViewMobile;
     private ProgressBar progressBar;
     private String fullName, email, doB, gender, mobile;
+
     private ImageView imageView;
     private FirebaseAuth authProfile;
     public UserProfile() {
@@ -43,23 +45,29 @@ public class UserProfile extends AppCompatActivity {
 
         authProfile = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = authProfile.getCurrentUser();
-
+        Log.e("","Binding to layout success");
         if (firebaseUser == null){
             Toast.makeText(UserProfile.this, "Some thing went wrong!", Toast.LENGTH_LONG).show();
         } else {
+            Log.e("","User found");
             progressBar.setVisibility(View.VISIBLE);
             showUserProfile(firebaseUser);
         }
     }
 
     private void showUserProfile(FirebaseUser firebaseUser) {
+        Log.e("","Enter UserProfile");
         String UID = firebaseUser.getUid();
-        DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Registered User");
+        DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Accounts ");
         referenceProfile.child(UID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 Account readUserDetails = snapshot.getValue(Account.class);
+
+                Log.e("","Binding data");
                 if (readUserDetails != null) {
+                    Log.e("","Found data");
                     fullName = firebaseUser.getDisplayName();
                     email = firebaseUser.getEmail();
                     doB= readUserDetails.getDob();
@@ -73,12 +81,12 @@ public class UserProfile extends AppCompatActivity {
                     textViewGender.setText(gender);
                     textViewMobile.setText(mobile);
                 }
-
                 progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("","Cancelled");
                 progressBar.setVisibility(View.GONE);
             }
         });
