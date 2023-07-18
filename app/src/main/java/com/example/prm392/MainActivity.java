@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         user = mAuth.getCurrentUser();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         // Clear existing menu items
         bottomNavigationView.getMenu().clear();
         ArrayList<String> roles = new ArrayList<>();
@@ -43,27 +43,20 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     roles.add(ds.getValue(String.class));
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        mDatabase.child("Accounts").orderByChild("email").equalTo(user.getEmail()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Account account = dataSnapshot.getValue(Account.class);
-                    switch (roles.get(account.getRoleId() - 1).toLowerCase().trim()) {
-                        case "user":
-                            bottomNavigationView.inflateMenu(R.menu.bottom_menu);
-                            break;
-                        case "admin":
-                            bottomNavigationView.inflateMenu(R.menu.admin_bottom_menu);
-                            break;
+                mDatabase.child("Accounts").orderByChild("email").equalTo(user.getEmail()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Account account = dataSnapshot.getValue(Account.class);
+                            switchMenuItems(bottomNavigationView, roles, account.getRoleId());
+                        }
                     }
-                }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
             @Override
@@ -72,6 +65,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+    }
+
+    private void switchMenuItems(BottomNavigationView bottomNavigationView, ArrayList<String> roles, int roleId) {
+        bottomNavigationView.getMenu().clear(); // Clear existing menu items
+        switch (roles.get(roleId - 1).toLowerCase().trim()) {
+            case "user":
+                bottomNavigationView.inflateMenu(R.menu.bottom_menu);
+                break;
+            case "admin":
+                bottomNavigationView.inflateMenu(R.menu.admin_bottom_menu);
+                break;
+        }
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
