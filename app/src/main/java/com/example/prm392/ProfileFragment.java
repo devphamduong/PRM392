@@ -78,38 +78,65 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        imgAvater = binding.imgAvatar;
+        tvName = binding.tvName;
+        tvEmail= binding.tvEmail;
+        showUserInfor();
+        binding.cardProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), ProfileUpdateActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.cardPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), PasswordChangeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.cardLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                GoToLogin();
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showUserInfor();
+    }
+
+    public void showUserInfor(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         if (user == null) {
             GoToLogin();
-        } else {
-            imgAvater = binding.imgAvatar;
-            tvName = binding.tvName;
-            tvEmail=binding.tvEmail;
-
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
-
-            if(name == null){
-                tvName.setVisibility(View.GONE);
-            }else{
-                tvName.setVisibility(View.VISIBLE);
-                tvName.setText(name);
-            }
-            tvEmail.setText(email);
-            Glide.with(this).load(photoUrl).error(R.drawable.ic_avatar_default).into(imgAvater);
-
-            binding.cardProfile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getActivity().getApplicationContext(), ProfileUpdateActivity.class);
-                    startActivity(intent);
-                }
-            });
         }
-        return view;
+
+
+        String name = user.getDisplayName();
+        String email = user.getEmail();
+        Uri photoUrl = user.getPhotoUrl();
+
+        if(name == null){
+            tvName.setVisibility(View.GONE);
+        }else{
+            tvName.setVisibility(View.VISIBLE);
+            tvName.setText(name);
+        }
+        tvEmail.setText(email);
+        Glide.with(ProfileFragment.this).load(photoUrl).error(R.drawable.ic_avatar_default).into(imgAvater);
+
     }
     private void GoToLogin() {
         Intent intent = new Intent(getActivity().getApplicationContext(), Login.class);
