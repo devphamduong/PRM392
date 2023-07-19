@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder> {
         holder.author.setText(blog.getAuthor());
 
         Glide.with(holder.author.getContext()).load(blog.getImg()).into(holder.img);
+        Log.d("nam11",blog.getImg());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

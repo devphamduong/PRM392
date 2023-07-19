@@ -37,7 +37,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_hello" />
 
         <EditText
-            android:id="@+id/edt_serach"
+            android:id="@+id/edt_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -58,7 +58,7 @@
             android:background="@drawable/custom_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/edt_serach"
+            app:layout_constraintStart_toEndOf="@+id/edt_search"
             app:layout_constraintTop_toBottomOf="@+id/txt_discover" />
 
         <Button
@@ -76,7 +76,7 @@
             android:id="@+id/btn_vege"
             android:layout_width="115dp"
             android:layout_height="wrap_content"
-            android:text="Vegetable"
+            android:text="Veg."
             android:background="@drawable/custom_button"
             app:layout_constraintBottom_toBottomOf="@+id/btn_meat"
             app:layout_constraintEnd_toStartOf="@+id/btn_fruit"
