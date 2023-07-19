@@ -1,6 +1,5 @@
 package com.example.prm392;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,12 +16,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
-    private final ArrayList<Food> foods;
-    private final Context context;
+    private ArrayList<Food> foods;
 
-    public FoodAdapter(ArrayList<Food> foods, Context context) {
-        this.foods = foods;
-        this.context = context;
+    public FoodAdapter(ArrayList<Food> list) {
+        this.foods = list;
     }
 
     @NonNull
@@ -35,23 +32,21 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
     @Override
     public void onBindViewHolder(@NonNull FoodHolder holder, int position) {
         Food food = foods.get(position);
-
-        Picasso.with(context)
+        Picasso.with(holder.itemView.getContext())
                 .load(food.getImage())
                 .placeholder(R.drawable.ic_image_loading)
                 .error(R.drawable.ic_error_loading)
                 .into(holder.image);
-
         holder.tv_name.setText(food.getName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, FoodDetailsActivity.class);
+                Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);
                 intent.putExtra("data", data);
-                context.startActivity(intent);
+                v.getContext().startActivity(intent);
             }
         });
     }
@@ -61,9 +56,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
         return foods.size();
     }
 
-    static class FoodHolder extends RecyclerView.ViewHolder {
+    class FoodHolder extends RecyclerView.ViewHolder { //đại diện cho layout row_chapter
         ImageView image;
         TextView tv_name;
+        TextView tv_description;
 
         public FoodHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,4 +68,5 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
         }
     }
 }
+
 
