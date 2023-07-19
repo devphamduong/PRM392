@@ -38,19 +38,18 @@ public class UserManagerAdapter extends RecyclerView.Adapter<UserManagerAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull UserHolder holder, int position) {
-        String encodedUri = accounts.get(position).getAvatar();
-        String decodedUri = Uri.decode(encodedUri);
-
-        Uri uri = Uri.parse(accounts.get(position).getAvatar());
-        Picasso.with(holder.itemView.getContext())
-                .load(Uri.parse(decodedUri))
-                .placeholder(R.drawable.ic_image_loading)
-                .error(R.drawable.ic_avatar_default)
-                .into(holder.image);
+//        String encodedUri = accounts.get(position).getAvatar();
+//        String decodedUri = Uri.decode(encodedUri);
+//Uri uri = Uri.parse(accounts.get(position).getAvatar());
+//        Picasso.with(holder.itemView.getContext())
+//                .load(Uri.parse(decodedUri))
+//                .placeholder(R.drawable.ic_image_loading)
+//                .error(R.drawable.ic_avatar_default)
+//                .into(holder.image);
         holder.txt_name.setText(accounts.get(position).getEmail());
-        //Glide.with(holder.itemView.getContext()).load(uri).placeholder(R.drawable.ic_image_loading).error(R.drawable.ic_avatar_default).into(holder.image);
+        Glide.with(holder.itemView.getContext()).load(accounts.get(position).getAvatar()).placeholder(R.drawable.ic_image_loading).error(R.drawable.ic_avatar_default).into(holder.image);
 
-        Log.d("huyhuy1", Uri.parse(decodedUri)+"");
+        Log.d("huyhuy1", accounts.get(position).getAvatar());
 
         holder.tv_enabled.setOnClickListener(new View.OnClickListener() {
             @Override
