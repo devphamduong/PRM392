@@ -1,5 +1,6 @@
 package com.example.prm392;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,44 +12,46 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class FoodCategoryAdapter extends RecyclerView.Adapter<FoodCategoryAdapter.FoodHolder> {
-    private ArrayList<Food> foods;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private final ArrayList<Food> foods;
+    private final Context context;
 
-    public FoodCategoryAdapter(ArrayList<Food> list) {
-        this.foods = list;
+    public FoodCategoryAdapter(ArrayList<Food> foods, Context context) {
+        this.foods = foods;
+        this.context = context;
     }
 
     @NonNull
     @Override
-    public FoodCategoryAdapter.FoodHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FoodHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_food_category, parent, false);
-        return new FoodCategoryAdapter.FoodHolder(v);
+        return new FoodHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FoodHolder holder, int position) {
-        Picasso.with(holder.itemView.getContext())
-                .load(foods.get(position).getImage())
+        Food food = foods.get(position);
+
+        Picasso.with(context)
+                .load(food.getImage())
                 .placeholder(R.drawable.ic_image_loading)
                 .error(R.drawable.ic_error_loading)
                 .into(holder.image);
-        holder.txt_name.setText(foods.get(position).getName());
+
+        holder.txt_name.setText(food.getName());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), foods.get(position).getCategoryId());
-                Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
+                Intent intent = new Intent(context, FoodDetailsActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);
                 intent.putExtra("data", data);
-                v.getContext().startActivity(intent);
+                context.startActivity(intent);
             }
         });
     }
@@ -58,7 +61,7 @@ public class FoodCategoryAdapter extends RecyclerView.Adapter<FoodCategoryAdapte
         return foods.size();
     }
 
-    class FoodHolder extends RecyclerView.ViewHolder { //đại diện cho layout row_chapter
+    static class FoodHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView txt_name;
 

@@ -1,5 +1,6 @@
 package com.example.prm392;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,10 +17,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
-    private ArrayList<Food> foods;
+    private final ArrayList<Food> foods;
+    private final Context context;
 
-    public FoodAdapter(ArrayList<Food> list) {
-        this.foods = list;
+    public FoodAdapter(ArrayList<Food> foods, Context context) {
+        this.foods = foods;
+        this.context = context;
     }
 
     @NonNull
@@ -31,21 +34,24 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull FoodHolder holder, int position) {
-        Picasso.with(holder.itemView.getContext())
-                .load(foods.get(position).getImage())
+        Food food = foods.get(position);
+
+        Picasso.with(context)
+                .load(food.getImage())
                 .placeholder(R.drawable.ic_image_loading)
                 .error(R.drawable.ic_error_loading)
                 .into(holder.image);
-        holder.tv_name.setText(foods.get(position).getName());
+
+        holder.tv_name.setText(food.getName());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), foods.get(position).getCategoryId());
-                Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
+                Intent intent = new Intent(context, FoodDetailsActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);
                 intent.putExtra("data", data);
-                v.getContext().startActivity(intent);
+                context.startActivity(intent);
             }
         });
     }
@@ -55,10 +61,9 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
         return foods.size();
     }
 
-    class FoodHolder extends RecyclerView.ViewHolder { //đại diện cho layout row_chapter
+    static class FoodHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView tv_name;
-        TextView tv_description;
 
         public FoodHolder(@NonNull View itemView) {
             super(itemView);
@@ -67,3 +72,4 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
         }
     }
 }
+
