@@ -36,7 +36,7 @@ public class Login extends AppCompatActivity {
         btn_signin = binding.btnSignin;
         txt_registerNow = binding.txtRegisterNow;
 
-        SignIn("pduong244@gmail.com", "123456"); // For testing, remove this line for actual usage
+        SignIn("pduong244@gmail.com", "123456"); 
 
         txt_registerNow.setOnClickListener(new View.OnClickListener() {
             @Override

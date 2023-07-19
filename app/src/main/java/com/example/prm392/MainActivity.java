@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (itemId == R.id.managerFragment) {
             selectedFragment = new ManagerFragment();
         } else if (itemId == R.id.othersFragment) {
-            selectedFragment = new OthersFragment();
+            selectedFragment = new UserManagerFragment();
         } else if (itemId == R.id.profileFragment) {
             selectedFragment = new ProfileFragment();
         }
