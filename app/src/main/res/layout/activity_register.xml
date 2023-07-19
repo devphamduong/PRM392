@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:drawableLeft="@drawable/ic_email"
+            android:drawableLeft="@drawable/ic_email2"
             android:drawablePadding="8dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
