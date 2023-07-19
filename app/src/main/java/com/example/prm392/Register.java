@@ -107,8 +107,12 @@ public class Register extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             String key = mDatabase.child("Accounts").push().getKey();
-                            Account account = new Account(key, "https://winaero.com/blog/wp-content/uploads/2015/05/user-200.png", userName, email, password, 2);
+                            Account account = new Account(key, "https://winaero.com/blog/wp-content/uploads/2015/05/user-200.png","LTD", "Male", "12/12/1999","0123", userName, email, password, 2);
+                            DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Registered User");
+                            referenceProfile.child(key).setValue(account);
+                            firebaseUser.sendEmailVerification();
                             mDatabase.child("Accounts").child(key).setValue(account, new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
@@ -120,6 +124,7 @@ public class Register extends AppCompatActivity {
                                     }
                                 }
                             });
+
                         } else {
                             Toast.makeText(Register.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                             Log.d("SIGNUP", task.getException().toString());

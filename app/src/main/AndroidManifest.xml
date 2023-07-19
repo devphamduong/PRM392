@@ -23,6 +23,9 @@
             android:name=".ProfileUpdateActivity"
             android:exported="false" />
         <activity
+            android:name=".UserProfile"
+            android:exported="false" />
+        <activity
             android:name=".FoodCategoryActivity"
             android:exported="false" />
         <activity

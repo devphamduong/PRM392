@@ -67,7 +67,7 @@ public class OthersFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentOthersBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        binding.button.setOnClickListener(new View.OnClickListener() {
+        binding.buttonLogout.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -79,6 +79,15 @@ public class OthersFragment extends Fragment {
                         getActivity().finish();
                     }
                 });
+            }
+        });
+
+        binding.buttonProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle profile button click event
+                Intent intent = new Intent(getActivity(), UserProfile.class);
+                startActivity(intent);
             }
         });
         return view;
