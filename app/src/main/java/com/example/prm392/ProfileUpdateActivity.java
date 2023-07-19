@@ -33,6 +33,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 
@@ -46,6 +52,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
     ImageButton btn_back;
     private Uri mUri;
     Context context;
+    DatabaseReference mDatabase;
 
     private ProgressDialog progressDialog;
 
@@ -81,6 +88,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         btn_update_profile = binding.btnUpdateProfile;
         context = this;
         progressDialog = new ProgressDialog(this);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         initListner();
         setUserInformation();
 
@@ -93,6 +101,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         }
         edt_fullname.setText(user.getDisplayName());
         mUri = user.getPhotoUrl();
+
         Glide.with(ProfileUpdateActivity.this).load(user.getPhotoUrl()).error(R.drawable.ic_avatar_default).into(imgAvatar);
     }
 
@@ -168,6 +177,22 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
+                            Query query = mDatabase.child("Accounts").orderByChild("email").equalTo(user.getEmail());
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                        // Get the child reference and update the desired field
+                                        DatabaseReference childRef = childSnapshot.getRef();
+                                        childRef.child("avatar").setValue(mUri+"");
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                             Toast.makeText(context,"Update profile successfully", Toast.LENGTH_SHORT).show();
                         }
                     }

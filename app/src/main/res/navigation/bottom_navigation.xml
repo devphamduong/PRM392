@@ -27,9 +27,9 @@
         tools:layout="@layout/fragment_manager" />
     <fragment
         android:id="@+id/othersFragment"
-        android:name="com.example.prm392.OthersFragment"
+        android:name="com.example.prm392.UserManagerFragment"
         android:label="fragment_others"
-        tools:layout="@layout/fragment_others" />
+        tools:layout="@layout/fragment_user_manager" />
 
     <fragment
         android:id="@+id/profileFragment"
