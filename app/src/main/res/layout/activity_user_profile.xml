@@ -164,7 +164,7 @@
                 android:layout_height="wrap_content"
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_centerVertical="true"
-                android:id="@+id/progress_bar"
+                android:id="@+id/loading_bar"
                 android:layout_centerHorizontal="true"
                 android:elevation="10dp"
                 android:visibility="gone"/>

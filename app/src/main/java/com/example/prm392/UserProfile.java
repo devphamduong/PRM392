@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 public class UserProfile extends AppCompatActivity {
 
     private TextView textViewWelcome, textViewFullName, textViewEmail, textViewDoB, textViewGender, textViewMobile;
+
     private ProgressBar progressBar;
     private String fullName, email, doB, gender, mobile;
 
@@ -41,7 +42,7 @@ public class UserProfile extends AppCompatActivity {
         textViewDoB = findViewById(R.id.textView_show_dob);
         textViewGender = findViewById(R.id.textView_show_gender);
         textViewMobile = findViewById(R.id.textView_show_mobile);
-        progressBar = findViewById(R.id.progress_bar);
+        progressBar = findViewById(R.id.loading_bar);
 
         authProfile = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = authProfile.getCurrentUser();
@@ -58,28 +59,31 @@ public class UserProfile extends AppCompatActivity {
     private void showUserProfile(FirebaseUser firebaseUser) {
         Log.e("","Enter UserProfile");
         String UID = firebaseUser.getUid();
-        DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Accounts ");
-        referenceProfile.child(UID).addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Accounts");
+        referenceProfile.child(UID);
+        referenceProfile.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 Account readUserDetails = snapshot.getValue(Account.class);
 
-                Log.e("","Binding data");
+                Log.e("", "Binding data");
                 if (readUserDetails != null) {
-                    Log.e("","Found data");
+                    Log.e("", "Found data");
                     fullName = firebaseUser.getDisplayName();
                     email = firebaseUser.getEmail();
-                    doB= readUserDetails.getDob();
+                    doB = readUserDetails.getDob();
                     gender = readUserDetails.getGender();
                     mobile = readUserDetails.getMobile();
 
-                    textViewWelcome.setText("Welcome,"+ fullName +"!");
+                    textViewWelcome.setText("Welcome," + fullName + "!");
                     textViewFullName.setText(fullName);
                     textViewEmail.setText(email);
                     textViewDoB.setText(doB);
                     textViewGender.setText(gender);
                     textViewMobile.setText(mobile);
+                } else {
+                    Log.e("", "User null");
                 }
                 progressBar.setVisibility(View.GONE);
             }
