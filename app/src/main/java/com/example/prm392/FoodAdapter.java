@@ -31,16 +31,17 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull FoodHolder holder, int position) {
+        Food food = foods.get(position);
         Picasso.with(holder.itemView.getContext())
-                .load(foods.get(position).getImage())
+                .load(food.getImage())
                 .placeholder(R.drawable.ic_image_loading)
                 .error(R.drawable.ic_error_loading)
                 .into(holder.image);
-        holder.tv_name.setText(foods.get(position).getName());
+        holder.tv_name.setText(food.getName());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), foods.get(position).getCategoryId());
                 Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);
@@ -67,3 +68,5 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
         }
     }
 }
+
+

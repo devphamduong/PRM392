@@ -1,6 +1,6 @@
 package com.example.prm392;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,71 +23,76 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.FoodHolder> {
-    private ArrayList<Food> foods;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private final ArrayList<Food> foods;
+    private final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-    public FoodManagerAdapter(ArrayList<Food> list) {
-        this.foods = list;
+    public FoodManagerAdapter(ArrayList<Food> foods) {
+        this.foods = foods;
     }
 
     @NonNull
     @Override
-    public FoodManagerAdapter.FoodHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FoodHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_food_manager, parent, false);
-        return new FoodManagerAdapter.FoodHolder(v);
+        return new FoodHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FoodManagerAdapter.FoodHolder holder, @SuppressLint("RecyclerView") int position) {
-        Picasso.with(holder.itemView.getContext())
-                .load(foods.get(position).getImage())
+    public void onBindViewHolder(@NonNull FoodHolder holder, int position) {
+        Food food = foods.get(position);
+        Context context = holder.itemView.getContext();
+
+        Picasso.with(context)
+                .load(food.getImage())
                 .placeholder(R.drawable.ic_image_loading)
                 .error(R.drawable.ic_error_loading)
                 .into(holder.image);
-        holder.txt_name.setText(foods.get(position).getName());
+
+        holder.txt_name.setText(food.getName());
+
         holder.btn_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), foods.get(position).getCategoryId());
-                Intent intent = new Intent(v.getContext(), FoodDetailsActivity.class);
+                Intent intent = new Intent(context, FoodDetailsActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);
                 intent.putExtra("data", data);
-                v.getContext().startActivity(intent);
+                context.startActivity(intent);
             }
         });
+
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food food = new Food(foods.get(position).getId(), foods.get(position).getImage(), foods.get(position).getName(), foods.get(position).getCalories(), foods.get(position).getCarbs(), foods.get(position).getFat(), foods.get(position).getProtein(), foods.get(position).getDescription(), foods.get(position).getCategoryId());
-                Intent intent = new Intent(v.getContext(), FoodEditActivity.class);
+                Intent intent = new Intent(context, FoodEditActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable("food", food);
                 intent.putExtra("data", data);
-                v.getContext().startActivity(intent);
+                context.startActivity(intent);
             }
         });
+
         holder.btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FoodDeleteDialog dialog = FoodDeleteDialog.newInstance(foods.get(position).getName());
+                FoodDeleteDialog dialog = FoodDeleteDialog.newInstance(food.getName());
                 dialog.setConfirmationListener(new FoodDeleteDialog.DeleteConfirmationListener() {
                     @Override
                     public void onConfirmDelete() {
                         // Perform the delete action here
-                        mDatabase.child("Foods").child(foods.get(position).getId()).child("isEnabled").setValue(false, new DatabaseReference.CompletionListener() {
+                        mDatabase.child("Foods").child(food.getId()).child("isEnabled").setValue(false, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                 if (error == null) {
-                                    Toast.makeText(v.getContext(), "Deleted successfully", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Deleted successfully", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(v.getContext(), "Failed to delete", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
                     }
                 });
-                dialog.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), "FoodDeleteDialog");
+                dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "FoodDeleteDialog");
             }
         });
     }
@@ -97,7 +102,7 @@ public class FoodManagerAdapter extends RecyclerView.Adapter<FoodManagerAdapter.
         return foods.size();
     }
 
-    class FoodHolder extends RecyclerView.ViewHolder { //đại diện cho layout row_chapter
+    static class FoodHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView txt_name;
         ImageView btn_details;
