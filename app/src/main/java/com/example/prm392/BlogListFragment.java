@@ -56,7 +56,7 @@ public class BlogListFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Account account = dataSnapshot.getValue(Account.class);
-                    if(account.getRoleId() != 1){
+                    if (account.getRoleId() != 1) {
                         binding.btnActionAdd.setVisibility(View.INVISIBLE);
                     }
                 }
@@ -101,7 +101,8 @@ public class BlogListFragment extends Fragment {
     private void filter(String newText) {
         ArrayList<Blog> filterList = new ArrayList<>();
         for (Blog item : list) {
-            if (item.getTitle().toString().toLowerCase().contains(newText)) {
+            if (item.getTitle().toString().toLowerCase().contains(newText)
+                    || item.getAuthor().toString().toLowerCase().contains(newText)) {
                 filterList.add(item);
             }
         }
