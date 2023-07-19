@@ -10,10 +10,6 @@
         android:id="@+id/blogFragment"
         android:icon="@drawable/ic_baseline_menu_book_24"
         android:title="Blogs" />
-    <item
-        android:id="@+id/othersFragment"
-        android:title="Others"
-        android:icon="@drawable/ic_others" />
 
     <item
         android:id="@+id/profileFragment"
