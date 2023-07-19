@@ -47,7 +47,7 @@ public class Login extends AppCompatActivity {
         progressBar = binding.progressBar;
         btn_signin = binding.btnSignin;
         txt_registerNow = binding.txtRegisterNow;
-        SignIn("pduong244@gmail.com", "1234567");
+        SignIn("profiletest@gmail.com", "123456");
 
         txt_registerNow.setOnClickListener(new View.OnClickListener() {
             @Override
